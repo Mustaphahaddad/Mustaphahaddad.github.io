@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="refresh" content="0; url=/APP/index.html" />
+</head>
+<body>
+    <script>
+        var path = window.location.pathname;
+        var newUrl = "/APP/index.html#" + path.substring("/APP/".length);
+        window.location.replace(newUrl);
+    </script>
+</body>
+</html>
