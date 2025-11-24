@@ -1,12 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta http-equiv="refresh" content="0; url=/index.html" />
+    <meta charset="utf-8" />
+    <title>Redirecting...</title>
+
+    <!--
+      This file is needed for Blazor WebAssembly on GitHub Pages.
+      Any unknown route (like /APP/authentication/login-callback)
+      will be served this 404.html, which then forwards the browser
+      to /APP/index.html with the original path in the hash (#...).
+    -->
+    <meta http-equiv="refresh" content="0; url=/APP/index.html" />
 </head>
 <body>
     <script>
-        var path = window.location.pathname;
-        var newUrl = "/index.html#" + path.substring("/".length);
+        // Original path, e.g. /APP/authentication/login-callback
+        var fullPath = window.location.pathname;
+
+        // The app is hosted under /APP
+        var appBase = "/APP/";
+
+        // Remove the /APP/ prefix
+        var relative = "";
+        if (fullPath.startsWith(appBase)) {
+            relative = fullPath.substring(appBase.length);
+        }
+
+        // Build new URL: /APP/index.html#/authentication/login-callback
+        var newUrl = appBase + "index.html";
+        if (relative && relative.length > 0) {
+            newUrl += "#" + relative;
+        }
+
         window.location.replace(newUrl);
     </script>
 </body>
