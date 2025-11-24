@@ -1,59 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
-    <title>Redirecting...</title>
-
-    <!--
-      GitHub Pages SPA fallback for Blazor WebAssembly.
-
-      Any unknown route (like /authentication/login or
-      /authentication/login-callback?code=...&state=...)
-      will be served this file.
-
-      We forward to /index.html, keeping:
-        - the original query string (?code=..., etc.)
-        - the original path in the hash (#/authentication/...)
-        - any existing hash (rare, but we keep it).
-    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- IMPORTANT: app hosted at root on GitHub Pages -->
+    <base href="/" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="stylesheet" href="css/app.css" />
+    <title>OrderScheduler</title>
 </head>
+
 <body>
-    <script>
-        (function () {
-            // Original URL parts
-            var path  = window.location.pathname || "/";
-            var query = window.location.search || "";
-            var hash  = window.location.hash   || "";
+    <div id="app">
+        <svg class="loading-progress">
+            <circle r="40%" cx="50%" cy="50%" />
+            <circle r="40%" cx="50%" cy="50%" />
+        </svg>
+        <div class="loading-progress-text"></div>
+    </div>
 
-            // App root on GitHub Pages (user site → root)
-            var appBase = "/";
-
-            // Path relative to app base, e.g. "authentication/login-callback"
-            var relative = "";
-            if (path.startsWith(appBase)) {
-                relative = path.substring(appBase.length);
-            }
-
-            // Build new URL: /index.html?query#/relative + original hash (if any)
-            var newUrl = appBase + "index.html";
-
-            // Keep ?code=...&state=... etc.
-            if (query) {
-                newUrl += query;
-            }
-
-            // Put original path into hash so Blazor router sees it
-            if (relative && relative.length > 0) {
-                newUrl += "#" + relative;
-            }
-
-            // If there was already a hash (rare), append it too
-            if (hash) {
-                newUrl += hash;
-            }
-
-            window.location.replace(newUrl);
-        })();
-    </script>
+    <script src="js/rowTooltip.js"></script>
+    <script src="_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js"></script>
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script src="js/meetingInterop.js"></script>
 </body>
+
 </html>
