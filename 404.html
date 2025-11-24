@@ -5,34 +5,55 @@
     <title>Redirecting...</title>
 
     <!--
-      This file is needed for Blazor WebAssembly on GitHub Pages.
-      Any unknown route (like /APP/authentication/login-callback)
-      will be served this 404.html, which then forwards the browser
-      to /APP/index.html with the original path in the hash (#...).
+      GitHub Pages SPA fallback for Blazor WebAssembly.
+
+      Any unknown route (like /authentication/login or
+      /authentication/login-callback?code=...&state=...)
+      will be served this file.
+
+      We forward to /index.html, keeping:
+        - the original query string (?code=..., etc.)
+        - the original path in the hash (#/authentication/...)
+        - any existing hash (rare, but we keep it).
     -->
-    <meta http-equiv="refresh" content="0; url=/APP/index.html" />
 </head>
 <body>
     <script>
-        // Original path, e.g. /APP/authentication/login-callback
-        var fullPath = window.location.pathname;
+        (function () {
+            // Original URL parts
+            var path  = window.location.pathname || "/";
+            var query = window.location.search || "";
+            var hash  = window.location.hash   || "";
 
-        // The app is hosted under /APP
-        var appBase = "/APP/";
+            // App root on GitHub Pages (user site → root)
+            var appBase = "/";
 
-        // Remove the /APP/ prefix
-        var relative = "";
-        if (fullPath.startsWith(appBase)) {
-            relative = fullPath.substring(appBase.length);
-        }
+            // Path relative to app base, e.g. "authentication/login-callback"
+            var relative = "";
+            if (path.startsWith(appBase)) {
+                relative = path.substring(appBase.length);
+            }
 
-        // Build new URL: /APP/index.html#/authentication/login-callback
-        var newUrl = appBase + "index.html";
-        if (relative && relative.length > 0) {
-            newUrl += "#" + relative;
-        }
+            // Build new URL: /index.html?query#/relative + original hash (if any)
+            var newUrl = appBase + "index.html";
 
-        window.location.replace(newUrl);
+            // Keep ?code=...&state=... etc.
+            if (query) {
+                newUrl += query;
+            }
+
+            // Put original path into hash so Blazor router sees it
+            if (relative && relative.length > 0) {
+                newUrl += "#" + relative;
+            }
+
+            // If there was already a hash (rare), append it too
+            if (hash) {
+                newUrl += hash;
+            }
+
+            window.location.replace(newUrl);
+        })();
     </script>
 </body>
 </html>
