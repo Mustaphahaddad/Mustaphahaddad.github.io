@@ -1,44 +1,59 @@
-(function () {
-  const ID = "row-tooltip";
-  let el = null;
+// wwwroot/js/rowTooltip.js
+window.rowTip = (function () {
+    let tipEl;
 
-  function ensure() {
-    if (el && document.body.contains(el)) return el;
-    el = document.getElementById(ID);
-    if (!el) {
-      el = document.createElement("div");
-      el.id = ID;
-      el.setAttribute("role", "tooltip");
-      el.style.position = "fixed";   
-      el.style.zIndex = "9999";
-      el.style.display = "none";    
-      el.style.pointerEvents = "none";
-      document.body.appendChild(el);
+    function ensureTip() {
+        if (tipEl) return tipEl;
+
+        tipEl = document.createElement("div");
+        tipEl.id = "row-tooltip";
+        tipEl.className = "row-tooltip";
+        tipEl.style.position = "fixed";
+        tipEl.style.zIndex = "9999";
+        tipEl.style.display = "none";
+
+        document.body.appendChild(tipEl);
+        return tipEl;
     }
-    return el;
-  }
 
-  function show(text, x, y) {
-    const tip = ensure();
-    if (!text) { hide(); return; }
+    function positionTip(x, y) {
+        const el = ensureTip();
+        const padding = 12;
 
+        // basic position near cursor
+        let left = x + 16;
+        let top = y + 16;
 
-    tip.innerHTML = text;
+        const vw = window.innerWidth || document.documentElement.clientWidth;
+        const vh = window.innerHeight || document.documentElement.clientHeight;
 
-    const offset = 14;
-    tip.style.left = (x + offset) + "px";
-    tip.style.top  = (y + offset) + "px";
+        // keep inside viewport
+        const rect = el.getBoundingClientRect();
+        if (left + rect.width + padding > vw) {
+            left = vw - rect.width - padding;
+        }
+        if (top + rect.height + padding > vh) {
+            top = vh - rect.height - padding;
+        }
 
-  
-    tip.style.display = "block";
-    tip.classList.add("is-visible");
-  }
+        el.style.left = left + "px";
+        el.style.top = top + "px";
+    }
 
-  function hide() {
-    const tip = ensure();
-    tip.style.display = "none";
-    tip.classList.remove("is-visible");
-  }
+    return {
+        show: function (html, x, y) {
+            const el = ensureTip();
 
-  window.rowTip = { show, hide };
+            // 👇 المهم هنا: innerHTML وليس textContent
+            el.innerHTML = html;
+
+            el.style.display = "block";
+            positionTip(x, y);
+        },
+
+        hide: function () {
+            if (!tipEl) return;
+            tipEl.style.display = "none";
+        }
+    };
 })();
