@@ -1248,6 +1248,7 @@ label.C {
   opacity: 0;
   transform: translateY(2px);
   transition: opacity .12s ease, transform .12s ease;
+  pointer-events: none;
 }
 
 #row-tooltip .tt-deadline {

@@ -1,59 +1,71 @@
 // wwwroot/js/rowTooltip.js
 window.rowTip = (function () {
-    let tipEl;
+    let tipEl = null;
 
-    function ensureTip() {
-        if (tipEl) return tipEl;
+    function ensureTooltip() {
+        if (tipEl) {
+            return tipEl;
+        }
 
-        tipEl = document.createElement("div");
-        tipEl.id = "row-tooltip";
-        tipEl.className = "row-tooltip";
-        tipEl.style.position = "fixed";
-        tipEl.style.zIndex = "9999";
-        tipEl.style.display = "none";
-
-        document.body.appendChild(tipEl);
+        // Try to find existing element
+        tipEl = document.getElementById("row-tooltip");
+        if (!tipEl) {
+            tipEl = document.createElement("div");
+            tipEl.id = "row-tooltip";
+            tipEl.className = "row-tooltip";
+            document.body.appendChild(tipEl);
+        }
         return tipEl;
     }
 
-    function positionTip(x, y) {
-        const el = ensureTip();
-        const padding = 12;
-
-        // basic position near cursor
-        let left = x + 16;
-        let top = y + 16;
-
-        const vw = window.innerWidth || document.documentElement.clientWidth;
-        const vh = window.innerHeight || document.documentElement.clientHeight;
-
-        // keep inside viewport
-        const rect = el.getBoundingClientRect();
-        if (left + rect.width + padding > vw) {
-            left = vw - rect.width - padding;
+    function show(html, clientX, clientY) {
+        if (!html) {
+            hide();
+            return;
         }
-        if (top + rect.height + padding > vh) {
-            top = vh - rect.height - padding;
+
+        const el = ensureTooltip();
+
+        // Inject HTML (نحتاج innerHTML عشان <br> و <span class="tt-deadline tt-blink"> يشتغلوا)
+        el.innerHTML = html;
+
+        // Position near mouse
+        const margin = 12;
+        let left = clientX + margin;
+        let top = clientY + margin;
+
+        // Force layout to get size
+        el.style.opacity = "0";
+        el.style.display = "block";
+
+        const rect = el.getBoundingClientRect();
+        const width = rect.width;
+        const height = rect.height;
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+
+        // If it goes out of screen on the right, put it to the left
+        if (left + width + margin > vw) {
+            left = clientX - width - margin;
+        }
+        // If out of bottom, move up
+        if (top + height + margin > vh) {
+            top = clientY - height - margin;
         }
 
         el.style.left = left + "px";
         el.style.top = top + "px";
+        el.style.opacity = "1";
+    }
+
+    function hide() {
+        if (!tipEl) return;
+        tipEl.style.opacity = "0";
+        // نتركه في DOM عشان نعيد استعماله، بس نخفيه
     }
 
     return {
-        show: function (html, x, y) {
-            const el = ensureTip();
-
-            // 👇 المهم هنا: innerHTML وليس textContent
-            el.innerHTML = html;
-
-            el.style.display = "block";
-            positionTip(x, y);
-        },
-
-        hide: function () {
-            if (!tipEl) return;
-            tipEl.style.display = "none";
-        }
+        show,
+        hide
     };
 })();
