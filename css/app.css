@@ -280,7 +280,7 @@ fieldset:disabled .btn {
   gap: .5rem;
   padding: .45rem .75rem;
   border-radius: 999px;
-  font-weight: 600;
+  font-weight: 500;
   background: var(--surface-2);
   color: var(--text);
   border: 1px solid var(--border);
@@ -294,6 +294,7 @@ fieldset:disabled .btn {
   border: 1px solid #eee;
   border-radius: 10px;
   max-height: calc(100vh -120px);
+  scrollbar-gutter: stable;
 }
 
 .table {
@@ -328,6 +329,21 @@ fieldset:disabled .btn {
 
 .text-end {
   text-align: right;
+}
+
+/* Center all table cells by default, but keep Kommentar separate */
+.table thead th:not(.col-kommentar),
+.table tbody td:not(.col-kommentar) {
+  text-align: center;
+}
+
+/* Kommentar column: fixed width and left-aligned text with ellipsis */
+.table thead th.col-kommentar,
+.table tbody td.col-kommentar {
+  width: 260px;
+  /* adjust if you want wider/narrower */
+  max-width: 260px;
+  text-align: left;
 }
 
 /* Header look & feel */
@@ -397,10 +413,9 @@ fieldset:disabled .btn {
   }
 }
 
-/* SUM row (footer or explicit .sum-row) */
 .table tfoot :where(th, td),
 .table tbody tr.sum-row :where(th, td) {
-  font-weight: 700;
+  font-weight: 500;
   background: var(--sum-bg) !important;
   color: var(--sum-fg) !important;
   border-top: 2px solid var(--sum-border) !important;
@@ -411,7 +426,7 @@ fieldset:disabled .btn {
   background: var(--sum-bg) !important;
   color: var(--sum-fg) !important;
   border-top: 2px solid var(--sum-border) !important;
-  font-weight: 700 !important;
+  font-weight: 500 !important;
 }
 
 
@@ -534,7 +549,7 @@ form textarea {
 
 form :is(label, .form-label) {
   color: var(--text);
-  font-weight: 600;
+  font-weight: 500;
   margin-bottom: .25rem;
 }
 
@@ -590,12 +605,13 @@ form :is(label, .form-label) {
    ========================================================= */
 .badge {
   display: inline-block;
-  padding: .25rem .5rem;
+  padding: 0.9rem 0.9rem;
   border-radius: 9999px;
-  font-size: .8125rem;
+  font-size: large;
   line-height: 1;
   border: 1px solid transparent;
   white-space: nowrap;
+  align-items: center;
 }
 
 .badge.light {
@@ -1070,7 +1086,7 @@ td.cell.repairday {
   padding: .18rem .5rem;
   border-radius: .5rem;
   border: 1px solid rgba(0, 0, 0, .08);
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1;
   letter-spacing: .2px;
   font-size: .9rem;
@@ -1205,12 +1221,13 @@ label.C {
 
 
 .table .has-tooltip {
-  overflow: visible;
+  overflow: hidden;
 }
 
-
 #row-tooltip {
-
+  position: fixed;
+  /* <-- add this (or 'absolute') */
+  left: 0;
   background: var(--surface-1);
   color: var(--text);
   border: 1px solid var(--border);
@@ -1233,6 +1250,40 @@ label.C {
   transition: opacity .12s ease, transform .12s ease;
 }
 
+#row-tooltip .tt-deadline {
+  color: #b91c1c;
+  font-weight: 450;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(255, 0, 0, 0.1);
+}
+
+
+/* Blinking animation for urgent deadlines */
+@keyframes tt-blink {
+  0%, 40% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  50%, 100% {
+    opacity: 0.25;
+    transform: translateY(-1px);
+  }
+}
+
+#row-tooltip .tt-blink {
+  animation: tt-blink 1s ease-in-out infinite;
+  font-weight: 750;
+  border: #000 1px solid;
+}
+
+
+.orders-table .table tbody tr> :where(td, th) {
+  padding-top: 0.9rem !important;
+  padding-bottom: 0.9rem !important;
+  font-size: larger;
+}
+
 #row-tooltip.is-visible {
   opacity: 1;
   transform: translateY(0);
@@ -1241,30 +1292,30 @@ label.C {
 #row-tooltip::after {
   content: "";
   position: absolute;
-  /* بما أننا نضع البالون أسفل-يمين المؤشر، نخلي السهم أعلى اليسار شوية */
+
   left: 12px;
   top: -6px;
   border: 6px solid transparent;
   border-bottom-color: var(--surface-1);
-  /* نفس خلفية البالون */
+
   filter: drop-shadow(0 -1px 0 var(--border));
 }
 
-/* احترام تقليل الحركة إن لزم */
+
 @media (prefers-reduced-motion: reduce) {
   #row-tooltip {
     transition: none;
   }
 }
 
-/* تحسين الاستجابة للموبايل */
+
 @media (max-width: 480px) {
   #row-tooltip {
     max-width: min(90vw, 420px);
   }
 }
 
-/* 7 equal columns for Mon..Sun */
+
 .week-grid {
   position: relative;
   padding: .25rem;
@@ -1303,11 +1354,53 @@ label.C {
   /* peach */
   box-shadow: 0 1px 2px rgba(0, 0, 0, .06);
   overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+
+  display: flex;
+  flex-direction: column;
+  /* allow multiple lines */
+  align-items: flex-start;
+  gap: .15rem;
+}
+
+/* first row inside the block */
+.plan-main {
   display: flex;
   align-items: center;
   gap: .5rem;
+  white-space: nowrap;
+}
+
+/* second line shown only on hover */
+.plan-block {
+  min-height: 42px;
+  border-radius: .5rem;
+  padding: .25rem .5rem;
+  border: 1px solid #e5e7eb;
+  background: #fff7ed; /* peach */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .06);
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;     
+  align-items: flex-start;
+  gap: .15rem;
+
+  /* احجز مساحة صغيرة دائماً للسطر الثاني */
+  padding-bottom: .35rem;
+}
+
+.plan-deadline {
+  font-size: .78rem;
+  color: #b91c1c;             /* red */
+  white-space: nowrap;
+
+  /* بدلاً من display:none/block */
+  height: 1.1em;              /* ارتفاع ثابت تقريباً للسطر */
+  visibility: hidden;         /* مخفية لكن حجزت مساحة */
+}
+
+.plan-block:hover .plan-deadline {
+  visibility: visible;        /* تظهر بدون تغيير ارتفاع البلوك */
 }
 
 /* small debug line */
@@ -2131,4 +2224,189 @@ label.C {
   margin-top: 8px;
   font-size: 0.8rem;
   color: var(--danger, #ef4444);
+}
+
+.plan-view-switch {
+  display: flex;
+  justify-content: center;
+  gap: .5rem;
+  margin: .75rem 0;
+}
+
+
+/* ============================================
+   Maintenance day picker (Plan / ArbeidsKalender)
+   ============================================ */
+.maint-pill-row {
+  margin-top: 0.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem;
+}
+
+.maint-pill {
+  border-radius: 9999px;
+  border: 1px solid rgba(148, 163, 184, 0.7); /* slate-400-ish */
+  padding: 0.05rem 0.4rem;
+  font-size: 0.65rem;
+  background: rgba(15, 23, 42, 0.9);          /* dark pill */
+  color: #e5e7eb;                              /* light text */
+  cursor: pointer;
+  white-space: nowrap;
+  line-height: 1.3;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+
+.maint-pill:hover {
+  border-color: var(--brand-400);
+  transform: translateY(-1px);
+}
+
+.maint-pill--active {
+  background: var(--brand-500);
+  border-color: var(--brand-400);
+  color: #ffffff;
+}
+
+.maint-label {
+  margin-top: 0.25rem;
+  font-size: 0.7rem;
+  opacity: 0.8;
+}
+
+
+/* =========================
+   Employee cell / maintenance picker
+   ========================= */
+
+.employee-cell {
+    position: relative;
+    padding-right: 0.75rem;
+}
+
+/* يوضح أن السيل قابلة للضغط فقط لمن يملك صلاحية */
+.employee-cell.employee-cell--editable {
+    cursor: pointer;
+}
+
+/* لمسة لطيفة عند المرور بالفأرة */
+.employee-cell.employee-cell--editable:hover {
+    background-color: #f5f5ff;
+}
+
+/* صف الموظف المفتوح (وقت ظهور الحبوب) */
+tr.maint-row-open > .employee-cell {
+    box-shadow: inset 3px 0 0 #4f46e5; /* خط بنفسجي على اليسار */
+    background-color: #eef2ff;
+}
+
+/* =========================
+   Maintenance pills
+   ========================= */
+
+.maint-pill-row {
+    margin-top: 0.35rem;
+    display: inline-flex;
+    gap: 0.25rem;
+    align-items: center;
+    flex-wrap: wrap;
+    animation: maintPillsFadeIn 0.6s ease-out;
+}
+
+.maint-pill {
+    border: 1px solid #abb3f8;
+    background-color: #eef2ff;
+    color: rgba(128, 128, 128, 0.733);
+    border-radius: 999px;
+    padding: 0.15rem 0.55rem;
+    font-size: 0.7rem;
+    line-height: 1.2;
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+        background-color 0.6s ease-out,
+        border-color 0.6s ease-out,
+        transform 0.6s ease-out,
+        box-shadow 0.6s ease-out;
+}
+
+.maint-pill:hover {
+    background-color: #e0e7ff;
+    border-color: #818cf8;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(15, 23, 42, 0.12);
+}
+
+.maint-pill--active {
+    background-color: #4f46e5;
+    border-color: #4338ca;
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(79, 70, 229, 0.45);
+}
+
+.maint-label {
+    margin-top: 0.15rem;
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+@keyframes maintPillsFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-3px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+/*  ------------------ Abscence ------------------
+
+
+/* Absence context menu overlay */
+.abs-ctx-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 2100;
+    background: transparent; /* لا نغمّق الخلفية حتى لا تزعج */
+}
+
+/* The small floating menu */
+.abs-ctx-menu {
+    background: #ffffff;
+    border-radius: 0.75rem;
+    box-shadow: 0 18px 45px rgba(15, 23, 42, .33);
+    padding: 0.25rem;
+    min-width: 200px;
+    font-size: 0.9rem;
+    border: 1px solid rgba(148, 163, 184, .4);
+}
+
+.abs-ctx-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.35rem 0.6rem;
+    border: none;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    gap: 0.4rem;
+}
+
+.abs-ctx-item:hover {
+    background: rgba(59, 130, 246, 0.08);
+}
+
+.abs-ctx-item--danger {
+    color: #b91c1c;
+}
+
+.abs-ctx-item--danger:hover {
+    background: rgba(239, 68, 68, 0.08);
 }

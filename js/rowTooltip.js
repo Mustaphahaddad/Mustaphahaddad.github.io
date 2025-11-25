@@ -9,9 +9,9 @@
       el = document.createElement("div");
       el.id = ID;
       el.setAttribute("role", "tooltip");
-      el.style.position = "fixed";   // فقط تموضع
+      el.style.position = "fixed";   
       el.style.zIndex = "9999";
-      el.style.display = "none";     // التحكم بالظهور
+      el.style.display = "none";    
       el.style.pointerEvents = "none";
       document.body.appendChild(el);
     }
@@ -22,15 +22,14 @@
     const tip = ensure();
     if (!text) { hide(); return; }
 
-    // النص
-    tip.textContent = text;
 
-    // موضع (أسفل يمين المؤشر قليلًا)
+    tip.innerHTML = text;
+
     const offset = 14;
     tip.style.left = (x + offset) + "px";
     tip.style.top  = (y + offset) + "px";
 
-    // إظهار
+  
     tip.style.display = "block";
     tip.classList.add("is-visible");
   }
