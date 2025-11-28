@@ -167,6 +167,15 @@ a:hover {
    ========================================================= */
 .page-wrap {
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
+
+  flex: 1 1 auto;
+  /* fill the available content height */
+  min-height: 0;
+  /* IMPORTANT: allow inner scroll areas to shrink */
+  height: auto;
+  /* no hard height */
 }
 
 .page-header {
@@ -293,9 +302,11 @@ fieldset:disabled .btn {
   overflow: auto;
   border: 1px solid #eee;
   border-radius: 10px;
-  max-height: calc(100vh -120px);
-  scrollbar-gutter: stable;
+
+  flex: 1 1 auto;
+  min-height: 0;
 }
+
 
 .table {
   width: 100%;
@@ -668,13 +679,19 @@ form :is(label, .form-label) {
    ========================================================= */
 .shell {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  /* lock to viewport */
   background: var(--bg);
+  overflow: hidden;
+  /* prevent outer page scroll */
 }
 
 /* Sidebar container */
 .sidecurtain {
   position: relative;
+  z-index: var(--nav-z);
+  /* 👈 أضِف هذا السطر */
+
   height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
@@ -702,11 +719,13 @@ form :is(label, .form-label) {
 
 /* Main area */
 .main {
+  position: relative;
   flex: 1 1 auto;
   min-width: 0;
   display: flex;
   flex-direction: column;
   background: var(--bg);
+  z-index: 0;
 }
 
 /* Top bar */
@@ -748,6 +767,16 @@ form :is(label, .form-label) {
 .content {
   flex: 1 1 auto;
   padding: 12px;
+  display: flex;
+  flex-direction: column;
+
+  /* important changes */
+  min-height: 0;
+  /* allow flexbox to shrink */
+  height: calc(100vh - 56px);
+  /* 56px is your .topbar *@/
+  overflow: auto;
+  /* scrolling happens here */
 }
 
 /* Collapse/expand handle that stays visible */
@@ -1074,12 +1103,14 @@ form :is(label, .form-label) {
   margin-bottom: .25rem;
 }
 
-tbody tr.repair-row > * {
-  background-color: #dbeafe !important; /* light blue */
+tbody tr.repair-row>* {
+  background-color: #dbeafe !important;
+  /* light blue */
 }
 
-tbody tr.repair-row:hover > * {
-  background-color: #bfdbfe !important; /* darker on hover */
+tbody tr.repair-row:hover>* {
+  background-color: #bfdbfe !important;
+  /* darker on hover */
 }
 
 /* Reparasjonsdag – ensure it wins over weekend styling */
@@ -1132,11 +1163,15 @@ tbody tr.foreign-row:hover>* {
   justify-content: center;
   gap: .35rem;
 
-  padding: 0 .9rem;       /* wider pill */
-  height: 1.9rem;         /* taller pill */
-  font-size: large;     /* larger text */
+  padding: 0 .9rem;
+  /* wider pill */
+  height: 1.9rem;
+  /* taller pill */
+  font-size: large;
+  /* larger text */
   line-height: 1;
-  font-weight: 600;       /* a bit bolder */
+  font-weight: 600;
+  /* a bit bolder */
   border-radius: 999px;
 
   border: 1px solid transparent;
@@ -1155,9 +1190,11 @@ tbody tr.foreign-row:hover>* {
 
 /* Warning (<= 7 days) */
 .due-pill.DueDateWarning {
-  border-color: #fbbf24;        /* amber-400 */
+  border-color: #fbbf24;
+  /* amber-400 */
   background: rgba(251, 191, 36, 0.12);
-  color: #92400e;               /* amber-800 */
+  color: #92400e;
+  /* amber-800 */
 }
 
 .due-pill.DueDateWarning::before {
@@ -1166,14 +1203,17 @@ tbody tr.foreign-row:hover>* {
 
 /* Critical (< 3 days) */
 .due-pill.DueDateCritical {
-  border-color: #f97373;        /* soft red */
+  border-color: #f97373;
+  /* soft red */
   background: rgba(248, 113, 113, 0.18);
-  color: #991b1b;               /* red-800 */
+  color: #991b1b;
+  /* red-800 */
   font-weight: 600;
 }
 
 .due-pill.DueDateCritical::before {
-  background: #ef4444;          /* red-500 */
+  background: #ef4444;
+  /* red-500 */
 }
 
 /* Hover: just a tiny emphasis, no crazy glow */
@@ -1320,11 +1360,15 @@ label.C {
 
 /* Blinking animation for urgent deadlines */
 @keyframes tt-blink {
-  0%, 40% {
+
+  0%,
+  40% {
     opacity: 1;
     transform: translateY(0);
   }
-  50%, 100% {
+
+  50%,
+  100% {
     opacity: 0.25;
     transform: translateY(-1px);
   }
@@ -1378,25 +1422,17 @@ label.C {
 .week-grid {
   position: relative;
   padding: .25rem;
-  height: 46px;
-  /* tweak height to what you like */
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: .25rem;
-}
-
-/* faint background cells just to keep the weekday grid look */
-
-
-.week-grid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  grid-auto-rows: 2.25rem;
-  /* any height you use */
+  grid-auto-rows: 1fr;
+  /* كل lane يشارك ارتفاع الصف */
+  gap: .25rem;
+  min-height: 100%;
+  /* املأ ارتفاع خلية الصف */
 }
 
 .week-grid .day-bg {
-  grid-row: 1;
+  grid-row: 1 / -1;
 }
 
 .week-grid .plan-block {
@@ -1435,12 +1471,13 @@ label.C {
   border-radius: .5rem;
   padding: .25rem .5rem;
   border: 1px solid #e5e7eb;
-  background: #fff7ed; /* peach */
+  background: #fff7ed;
+  /* peach */
   box-shadow: 0 1px 2px rgba(0, 0, 0, .06);
   overflow: hidden;
 
   display: flex;
-  flex-direction: column;     
+  flex-direction: column;
   align-items: flex-start;
   gap: .15rem;
 
@@ -1448,18 +1485,57 @@ label.C {
   padding-bottom: .35rem;
 }
 
+/* ArbeidsKalender: make first column narrower (~10% of window width) */
+
+.plan-page-root {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  /* prevent vertical overflow */
+}
+
+
+.plan-page-root .table-wrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  /* correct scrolling behavior */
+}
+
+.plan-table {
+  width: 100%;
+  height: 95%;
+  table-layout: fixed;
+  /* no explicit height needed */
+}
+
+/* Header + cells for first (sticky) column */
+.plan-table th.sticky-col-1,
+.plan-table td.sticky-col {
+  width: 10vw;
+  /* 10% of viewport width */
+  min-width: 8vw;
+  max-width: 15vw;
+}
+
+
 .plan-deadline {
   font-size: .78rem;
-  color: #b91c1c;             /* red */
+  color: #b91c1c;
+  /* red */
   white-space: nowrap;
 
   /* بدلاً من display:none/block */
-  height: 1.1em;              /* ارتفاع ثابت تقريباً للسطر */
-  visibility: hidden;         /* مخفية لكن حجزت مساحة */
+  height: 1.1em;
+  /* ارتفاع ثابت تقريباً للسطر */
+  visibility: hidden;
+  /* مخفية لكن حجزت مساحة */
 }
 
 .plan-block:hover .plan-deadline {
-  visibility: visible;        /* تظهر بدون تغيير ارتفاع البلوك */
+  visibility: visible;
+  /* تظهر بدون تغيير ارتفاع البلوك */
 }
 
 /* small debug line */
@@ -1522,22 +1598,48 @@ label.C {
   border-radius: 10px;
 }
 
+
+.plan-page-root {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: calc(100vh - 56px);
+  /* عدّل 56 إذا ارتفاع الـ topbar مختلف */
+}
+
+/* الجدول (table-wrap) يملأ المساحة المتبقية،
+   بدون حد أقصى غريب للارتفاع، وسكروول داخلي فقط عند الحاجة */
+.plan-page-root .table-wrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
+  /* override: max-height: calc(100vh - 120px) */
+  overflow: auto;
+}
+
+/* شريط الأزرار في الأسفل يبقى ثابت في أسفل الصفحة
+   لكن بدون ما يزود في ارتفاع المحتوى الأساسي */
+.plan-page-root .toolbar--centered {
+  flex: 0 0 auto;
+}
+
+
 /*-----------------------Meeting--------------------*/
 .meeting-title {
   text-align: center;
   margin-bottom: 1rem;
 }
 
+
 #meeting-root {
-  max-width: hw;
-  margin: 0 auto;
+  width: 100%;
+  max-width: none;
+  margin: 0;
   padding: 0 1.5rem 2rem;
 
-  /* Make content fill viewport height */
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - 80px);
-  /* adjust 80px if your header is taller/shorter */
 }
 
 .meeting-nav {
@@ -2314,11 +2416,14 @@ label.C {
 
 .maint-pill {
   border-radius: 9999px;
-  border: 1px solid rgba(148, 163, 184, 0.7); /* slate-400-ish */
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  /* slate-400-ish */
   padding: 0.05rem 0.4rem;
   font-size: 0.65rem;
-  background: rgba(15, 23, 42, 0.9);          /* dark pill */
-  color: #e5e7eb;                              /* light text */
+  background: rgba(15, 23, 42, 0.9);
+  /* dark pill */
+  color: #e5e7eb;
+  /* light text */
   cursor: pointer;
   white-space: nowrap;
   line-height: 1.3;
@@ -2348,24 +2453,25 @@ label.C {
    ========================= */
 
 .employee-cell {
-    position: relative;
-    padding-right: 0.75rem;
+  position: relative;
+  padding-right: 0.75rem;
 }
 
 /* يوضح أن السيل قابلة للضغط فقط لمن يملك صلاحية */
 .employee-cell.employee-cell--editable {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 /* لمسة لطيفة عند المرور بالفأرة */
 .employee-cell.employee-cell--editable:hover {
-    background-color: #f5f5ff;
+  background-color: #f5f5ff;
 }
 
 /* صف الموظف المفتوح (وقت ظهور الحبوب) */
-tr.maint-row-open > .employee-cell {
-    box-shadow: inset 3px 0 0 #4f46e5; /* خط بنفسجي على اليسار */
-    background-color: #eef2ff;
+tr.maint-row-open>.employee-cell {
+  box-shadow: inset 3px 0 0 #4f46e5;
+  /* خط بنفسجي على اليسار */
+  background-color: #eef2ff;
 }
 
 /* =========================
@@ -2373,61 +2479,62 @@ tr.maint-row-open > .employee-cell {
    ========================= */
 
 .maint-pill-row {
-    margin-top: 0.35rem;
-    display: inline-flex;
-    gap: 0.25rem;
-    align-items: center;
-    flex-wrap: wrap;
-    animation: maintPillsFadeIn 0.6s ease-out;
+  margin-top: 0.35rem;
+  display: inline-flex;
+  gap: 0.25rem;
+  align-items: center;
+  flex-wrap: wrap;
+  animation: maintPillsFadeIn 0.6s ease-out;
 }
 
 .maint-pill {
-    border: 1px solid #abb3f8;
-    background-color: #eef2ff;
-    color: rgba(128, 128, 128, 0.733);
-    border-radius: 999px;
-    padding: 0.15rem 0.55rem;
-    font-size: 0.7rem;
-    line-height: 1.2;
-    cursor: pointer;
-    white-space: nowrap;
-    transition:
-        background-color 0.6s ease-out,
-        border-color 0.6s ease-out,
-        transform 0.6s ease-out,
-        box-shadow 0.6s ease-out;
+  border: 1px solid #abb3f8;
+  background-color: #eef2ff;
+  color: rgba(128, 128, 128, 0.733);
+  border-radius: 999px;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.7rem;
+  line-height: 1.2;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background-color 0.6s ease-out,
+    border-color 0.6s ease-out,
+    transform 0.6s ease-out,
+    box-shadow 0.6s ease-out;
 }
 
 .maint-pill:hover {
-    background-color: #e0e7ff;
-    border-color: #818cf8;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(15, 23, 42, 0.12);
+  background-color: #e0e7ff;
+  border-color: #818cf8;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.12);
 }
 
 .maint-pill--active {
-    background-color: #4f46e5;
-    border-color: #4338ca;
-    color: #ffffff;
-    font-weight: 600;
-    box-shadow: 0 2px 6px rgba(79, 70, 229, 0.45);
+  background-color: #4f46e5;
+  border-color: #4338ca;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(79, 70, 229, 0.45);
 }
 
 .maint-label {
-    margin-top: 0.15rem;
-    font-size: 0.75rem;
-    color: #6b7280;
+  margin-top: 0.15rem;
+  font-size: 0.75rem;
+  color: #6b7280;
 }
 
 @keyframes maintPillsFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-3px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 
@@ -2437,44 +2544,153 @@ tr.maint-row-open > .employee-cell {
 
 /* Absence context menu overlay */
 .abs-ctx-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 2100;
-    background: transparent; /* لا نغمّق الخلفية حتى لا تزعج */
+  position: fixed;
+  inset: 0;
+  z-index: 2100;
+  background: transparent;
+  /* لا نغمّق الخلفية حتى لا تزعج */
 }
 
 /* The small floating menu */
 .abs-ctx-menu {
-    background: #ffffff;
-    border-radius: 0.75rem;
-    box-shadow: 0 18px 45px rgba(15, 23, 42, .33);
-    padding: 0.25rem;
-    min-width: 200px;
-    font-size: 0.9rem;
-    border: 1px solid rgba(148, 163, 184, .4);
+  background: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, .33);
+  padding: 0.25rem;
+  min-width: 200px;
+  font-size: 0.9rem;
+  border: 1px solid rgba(148, 163, 184, .4);
 }
 
 .abs-ctx-item {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    padding: 0.35rem 0.6rem;
-    border: none;
-    background: transparent;
-    text-align: left;
-    cursor: pointer;
-    border-radius: 0.5rem;
-    gap: 0.4rem;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.35rem 0.6rem;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  gap: 0.4rem;
 }
 
 .abs-ctx-item:hover {
-    background: rgba(59, 130, 246, 0.08);
+  background: rgba(59, 130, 246, 0.08);
 }
 
 .abs-ctx-item--danger {
-    color: #b91c1c;
+  color: #b91c1c;
 }
 
 .abs-ctx-item--danger:hover {
-    background: rgba(239, 68, 68, 0.08);
+  background: rgba(239, 68, 68, 0.08);
+}
+
+
+/* Employee name with custom tooltip */
+.emp-name {
+  position: relative;
+  font-weight: 600;
+}
+
+/* Make it look clickable when editable */
+.emp-name--editable {
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 0.15rem;
+}
+
+/* The tooltip bubble */
+.emp-name--editable[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: 0;
+  top: 100%;
+  margin-top: 0.35rem;
+
+  white-space: nowrap;
+  padding: 0.35rem 0.6rem;
+  border-radius: 0.35rem;
+
+  background: #111827;
+  color: #f9fafb;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .25);
+  z-index: 100;
+
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+  transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+}
+
+/* Small arrow under the bubble */
+.emp-name--editable[data-tip]::before {
+  content: "";
+  position: absolute;
+  left: 0.9rem;
+  top: calc(100% + 0.1rem);
+
+  border-width: 5px;
+  border-style: solid;
+  border-color: #111827 transparent transparent transparent;
+
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+  transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+}
+
+/* Show tooltip on hover (and focus for keyboard users) */
+.emp-name--editable:hover[data-tip]::after,
+.emp-name--editable:hover[data-tip]::before,
+.emp-name--editable:focus-visible[data-tip]::after,
+.emp-name--editable:focus-visible[data-tip]::before {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+
+@media (min-width: 980px) {
+
+  /* Shell reserves space on the left for the sidebar */
+  .shell {
+    position: relative;
+    overflow-x: hidden;
+    padding-left: var(--nav-open-width);
+    /* 220px when open */
+  }
+
+  /* When "closed", only reserve the thin strip */
+  .shell.sidebar-closed {
+    padding-left: var(--nav-closed-width);
+    /* 8px */
+  }
+
+  /* Sidebar itself: fixed to the left, above page content */
+  .sidecurtain {
+    position: fixed;
+    inset: 0 auto 0 0;
+    /* top:0; left:0; bottom:0 */
+    width: var(--nav-open-width);
+    z-index: var(--nav-z);
+    
+    /* 1000 from your tokens */
+  }
+
+  .shell.sidebar-closed .sidecurtain {
+    width: var(--nav-closed-width);
+    
+  }
+
+  /* Main content should never cover the sidebar */
+  .main {
+    position: relative;
+    max-height: calc(100vh - 60px);
+    z-index: 0;
+  }
 }
