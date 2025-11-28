@@ -1074,6 +1074,14 @@ form :is(label, .form-label) {
   margin-bottom: .25rem;
 }
 
+tbody tr.repair-row > * {
+  background-color: #dbeafe !important; /* light blue */
+}
+
+tbody tr.repair-row:hover > * {
+  background-color: #bfdbfe !important; /* darker on hover */
+}
+
 /* Reparasjonsdag – ensure it wins over weekend styling */
 td.cell.repairday {
   background: #fff6e5 !important;
@@ -1118,13 +1126,63 @@ tbody tr.foreign-row:hover>* {
   background-color: #d6a71c66 !important;
 }
 
-tbody tr.foreign-row>td.DueDateWarning,
-tbody td.DueDateWarning {
-  background-color: #efefef !important;
-  color: #ff0000;
-  font-weight: 500;
-  border: 1px dashed #ff0000;
-  text-align: center;
+.due-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .35rem;
+
+  padding: 0 .9rem;       /* wider pill */
+  height: 1.9rem;         /* taller pill */
+  font-size: 0.95rem;     /* larger text */
+  line-height: 1;
+  font-weight: 600;       /* a bit bolder */
+  border-radius: 999px;
+
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.7);
+  color: inherit;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, .04);
+}
+
+/* small dot icon */
+.due-pill::before {
+  content: "";
+  width: .4rem;
+  height: .4rem;
+  border-radius: 999px;
+}
+
+/* Warning (<= 7 days) */
+.due-pill.DueDateWarning {
+  border-color: #fbbf24;        /* amber-400 */
+  background: rgba(251, 191, 36, 0.12);
+  color: #92400e;               /* amber-800 */
+}
+
+.due-pill.DueDateWarning::before {
+  background: #fbbf24;
+}
+
+/* Critical (< 3 days) */
+.due-pill.DueDateCritical {
+  border-color: #f97373;        /* soft red */
+  background: rgba(248, 113, 113, 0.18);
+  color: #991b1b;               /* red-800 */
+  font-weight: 600;
+}
+
+.due-pill.DueDateCritical::before {
+  background: #ef4444;          /* red-500 */
+}
+
+/* Hover: just a tiny emphasis, no crazy glow */
+tbody tr:hover .due-pill.DueDateWarning {
+  background: rgba(251, 191, 36, 0.18);
+}
+
+tbody tr:hover .due-pill.DueDateCritical {
+  background: rgba(248, 113, 113, 0.25);
 }
 
 /* =========================================================
@@ -1232,7 +1290,7 @@ label.C {
   color: var(--text);
   border: 1px solid var(--border);
   border-radius: 10px;
-
+  z-index: 1000;
 
   padding: 8px 10px;
   font-size: 18px;
@@ -1408,6 +1466,15 @@ label.C {
 .plan-block .dbg {
   font-size: .72rem;
   opacity: .8;
+}
+
+.plan-block--deadline {
+  border-color: var(--danger);
+  /* red-ish glow */
+  box-shadow:
+    0 0 0 2px color-mix(in oklab, var(--danger) 40%, transparent),
+    0 6px 12px rgba(0, 0, 0, .18);
+  background: color-mix(in oklab, #fff7ed 70%, var(--danger) 5%);
 }
 
 .absence-band {

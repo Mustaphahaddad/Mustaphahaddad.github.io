@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "OrderScheduler",
   "resources": {
-    "hash": "sha256-aLm1UNJJvoNPLyIMa9jkR8TyW3KhAnBuf5XNIIVJDd0=",
+    "hash": "sha256-tVeTAcrfC1QMFioYyDRTwBOOpVKaLC+9yminklK8kWg=",
     "fingerprinting": {
       "Azure.Core.ltf0pljmuu.wasm": "Azure.Core.wasm",
       "Microsoft.AspNetCore.Authorization.y09gq0l71e.wasm": "Microsoft.AspNetCore.Authorization.wasm",
@@ -77,8 +77,8 @@
       "System.Threading.Thread.kikdu83mrh.wasm": "System.Threading.Thread.wasm",
       "System.Threading.49f94ze17y.wasm": "System.Threading.wasm",
       "System.cunp5qiwjj.wasm": "System.wasm",
-      "System.Private.CoreLib.ft2eear7x7.wasm": "System.Private.CoreLib.wasm",
-      "OrderScheduler.x6icfxqlsi.wasm": "OrderScheduler.wasm",
+      "System.Private.CoreLib.zio9vh75qr.wasm": "System.Private.CoreLib.wasm",
+      "OrderScheduler.v6jqm5zxrj.wasm": "OrderScheduler.wasm",
       "dotnet.js": "dotnet.js",
       "dotnet.native.rtblh4npr3.js": "dotnet.native.js",
       "dotnet.native.aqhezbunpl.wasm": "dotnet.native.wasm",
@@ -103,7 +103,7 @@
     },
     "coreAssembly": {
       "System.Runtime.InteropServices.JavaScript.4wymnd9fjf.wasm": "sha256-3IoLyXDPZlSSNuf0cCFYH/6pnHsiIz+bg/ptKuGnMiI=",
-      "System.Private.CoreLib.ft2eear7x7.wasm": "sha256-w6uSa+aFsVE+LrZPHFXWPTPkrOEY6ySvYWh4pibcPqY="
+      "System.Private.CoreLib.zio9vh75qr.wasm": "sha256-a/dMBk4idEhz0dq4PIasMV8npP3QzcYQy8yZVQH4wMM="
     },
     "assembly": {
       "Azure.Core.ltf0pljmuu.wasm": "sha256-59JxV5wTM2SQr+SUghmDjF366cxcEFzb01pIZFbSQvE=",
@@ -179,7 +179,7 @@
       "System.Threading.Thread.kikdu83mrh.wasm": "sha256-HFeFKONCCyItD2mVCPcxvfm6YwNN1XQ0eweW6uTLwCw=",
       "System.Threading.49f94ze17y.wasm": "sha256-eMVxRGg7oZUX5lIdChi0hccItDLRWV40/GUaSBTvGqQ=",
       "System.cunp5qiwjj.wasm": "sha256-DM5iEENhrifGKn33Y7cqRzxC0OtHXYOKO13icwIazj8=",
-      "OrderScheduler.x6icfxqlsi.wasm": "sha256-GVovMWotTd8WwsGXgU36wP5a5r3rvZpoaJEA3lvnneM="
+      "OrderScheduler.v6jqm5zxrj.wasm": "sha256-p104znI39JcrKH7uZyfsX0rfmp2Ak3mjulbziRhGrOI="
     }
   },
   "cacheBootResources": true,
