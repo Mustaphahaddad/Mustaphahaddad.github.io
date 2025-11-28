@@ -1134,7 +1134,7 @@ tbody tr.foreign-row:hover>* {
 
   padding: 0 .9rem;       /* wider pill */
   height: 1.9rem;         /* taller pill */
-  font-size: 0.95rem;     /* larger text */
+  font-size: large;     /* larger text */
   line-height: 1;
   font-weight: 600;       /* a bit bolder */
   border-radius: 999px;
