@@ -2687,10 +2687,30 @@ tr.maint-row-open>.employee-cell {
     
   }
 
+  .content {
+    flex: 1 1 auto;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+  
+    /* important changes */
+    min-height: 0;
+    /* allow flexbox to shrink */
+    height: 100%;
+    /* 56px is your .topbar *@/
+    overflow: auto;
+    /* scrolling happens here */
+  }
+
   /* Main content should never cover the sidebar */
   .main {
     position: relative;
-    max-height: calc(100vh - 60px);
+    max-height: 100vh;
     z-index: 0;
   }
+}
+
+.left-sided {
+align-items: left;
+margin-left: 20px;
 }
