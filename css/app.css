@@ -1723,6 +1723,7 @@ label.C {
   /* fill full height of right column */
 }
 
+
 /* attendees list uses all available vertical space above history */
 .attendee-list {
   margin-top: 0.5rem;
@@ -1822,16 +1823,26 @@ label.C {
 }
 
 .attendee-item input[type="checkbox"] {
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 1.15rem;
+  height: 1.15rem;
   accent-color: #22c55e;
-  /* bright green */
-  flex-shrink: 0;
+  /* green */
+  opacity: 1;
+  /* don't fade */
+  filter: none;
 }
 
+/* readonly: non-clickable but still high contrast */
 .attendee-item--readonly input[type="checkbox"] {
   pointer-events: none;
-  /* cannot click, but keeps green color */
+  opacity: 1;
+  filter: saturate(1.2) contrast(1.15);
+}
+
+/* Optional: make checked stand out more */
+.attendee-item--readonly input[type="checkbox"]:checked {
+  outline: 2px solid rgba(34, 197, 94, .35);
+  outline-offset: 2px;
 }
 
 .attendee-item--readonly {
@@ -1848,6 +1859,32 @@ label.C {
   background-color: #e0f2fe;
   border-radius: 999px;
   padding: 0.1rem 0.4rem;
+}
+
+.attendee-checkbox {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  accent-color: #198754;
+  /* bootstrap success green */
+}
+
+/* Disabled checkboxes are often dimmed; override that */
+.attendee-checkbox--readonly:disabled {
+  opacity: 1 !important;
+  /* keep it visible */
+  filter: none !important;
+  cursor: not-allowed;
+}
+
+/* Optional: ensure user can't toggle via label click in readonly */
+.attendee-item--readonly {
+  cursor: default;
+}
+
+.attendee-item--readonly input {
+  pointer-events: none;
+  /* extra safety */
 }
 
 .meeting-history {
@@ -2678,13 +2715,13 @@ tr.maint-row-open>.employee-cell {
     /* top:0; left:0; bottom:0 */
     width: var(--nav-open-width);
     z-index: var(--nav-z);
-    
+
     /* 1000 from your tokens */
   }
 
   .shell.sidebar-closed .sidecurtain {
     width: var(--nav-closed-width);
-    
+
   }
 
   .content {
@@ -2692,7 +2729,7 @@ tr.maint-row-open>.employee-cell {
     padding: 12px;
     display: flex;
     flex-direction: column;
-  
+
     /* important changes */
     min-height: 0;
     /* allow flexbox to shrink */
@@ -2711,6 +2748,20 @@ tr.maint-row-open>.employee-cell {
 }
 
 .left-sided {
-align-items: left;
-margin-left: 20px;
+  align-items: left;
+  margin-left: 20px;
+}
+
+.card-body-scroll {
+  max-height: 60vh;
+  /* adjust as needed */
+  overflow-y: auto;
+}
+
+
+.card-body-scroll thead th {
+  position: sticky;
+  top: 0;
+  background: var(--bs-body-bg);
+  z-index: 1;
 }
