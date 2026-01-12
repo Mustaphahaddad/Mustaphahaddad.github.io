@@ -1105,21 +1105,18 @@ form :is(label, .form-label) {
 
 tbody tr.repair-row>* {
   background-color: #dbeafe !important;
-  /* light blue */
 }
 
 tbody tr.repair-row:hover>* {
   background-color: #bfdbfe !important;
-  /* darker on hover */
+
 }
 
-/* Reparasjonsdag – ensure it wins over weekend styling */
 td.cell.repairday {
   background: #fff6e5 !important;
   box-shadow: inset 0 0 0 1px #ffd59c;
 }
 
-/* Base badge */
 .badge.job {
   display: inline-block;
   padding: .18rem .5rem;
@@ -1131,7 +1128,6 @@ td.cell.repairday {
   font-size: .9rem;
 }
 
-/* High-contrast order number pill */
 .badge.job.order-pill {
   background: var(--svg-purple-2);
   padding: 10px;
@@ -1141,10 +1137,60 @@ td.cell.repairday {
   box-shadow: 0 0 0 1px rgba(255, 255, 255, .4) inset;
 }
 
+.badge.job.order-pill {
+  display: inline-block;
+  padding: 10px;
+  border-radius: .6rem;
+  font-weight: 600;
+  font-size: large;
+  line-height: 1;
+  letter-spacing: .2px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .35) inset;
+  transition: transform .08s ease, box-shadow .08s ease;
+}
+
+.badge.job.order-pill:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, .55) inset,
+    0 4px 10px rgba(0, 0, 0, .15);
+}
+
 .wknd .badge.job.order-pill {
   background: #000;
   box-shadow: 0 0 0 1px rgba(255, 255, 255, .5) inset;
 }
+
+
+.order-pill--repair {
+  background: #f97316;
+  color: #fff;
+}
+
+.order-pill--repair:hover {
+  background: #ea580c;
+}
+
+.order-pill--new-system {
+  background: var(--svg-purple-2);
+  color: #fff;
+}
+
+.order-pill--new-system:hover {
+  background: #6d28d9;
+}
+
+.order-pill--abroad {
+  background: #2563eb;
+  color: #fff;
+}
+
+.order-pill--abroad:hover {
+  background: #1e40af;
+}
+
 
 /* =========================================================
    ROW HIGHLIGHTS & WARNINGS
@@ -2764,4 +2810,120 @@ tr.maint-row-open>.employee-cell {
   top: 0;
   background: var(--bs-body-bg);
   z-index: 1;
+}
+
+.page-header.ordre-header {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 16px;
+}
+
+/* The right side area (filters + new order + search + chip) */
+.page-header.ordre-header .ordre-toolbar {
+  display: grid;
+  grid-template-columns: 1fr auto; /* center group | right group */
+  align-items: center;
+  column-gap: 16px;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Center group: filter buttons + Ny ordre (centered) */
+.page-header.ordre-header .ordre-toolbar .toolbar-center {
+  justify-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Right group: search + sum chip aligned right */
+.page-header.ordre-header .ordre-toolbar .toolbar-right {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+/* Spacing between filter buttons */
+.page-header.ordre-header .type-filter {
+  display: inline-flex;
+  gap: 10px;
+}
+
+.page-header.ordre-header .type-filter-btn.is-on {
+  background: var(--btn-primary-bg) !important;
+  border-color: var(--btn-primary-bg) !important;
+  color: var(--btn-primary-fg) !important;
+}
+
+.page-header.ordre-header .type-filter-btn.is-off {
+  background: var(--btn-secondary-bg) !important;
+  border-color: var(--border) !important;
+  color: var(--btn-secondary-fg) !important;
+}
+.page-header.ordre-header .type-filter + .type-filter {
+  margin-left: 10px;
+}
+
+.page-header.ordre-header .toolbar-center {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px; 
+}
+
+.page-header.ordre-header .type-filter {
+  display: inline-flex;
+  gap: 1px;
+}
+
+.plan-table tfoot tr.footer-row > * {
+  background-color: #f1f5ff !important;
+}
+
+.plan-table tfoot tr.footer-row--repair > * {
+  background-color: #fff7ed !important;
+}
+
+.plan-table tfoot tr.footer-row--new > * {
+  background-color: #ecfeff !important;
+}
+
+.plan-table tfoot tr.footer-row--abroad > * {
+  background-color: #eff6ff !important;
+}
+
+.plan-table tfoot tr.footer-row:hover > * {
+  filter: brightness(0.98);
+}
+
+.plan-table tfoot .order-pill.order-pill--repair {
+  background: #3b82f6 !important;
+  color: #fff !important;
+}
+
+.plan-table tfoot .order-pill.order-pill--new-system {
+  background: #6366f1 !important;
+  color: #fff !important;
+}
+
+.plan-table tfoot .order-pill.order-pill--abroad {
+  background: #f97316 !important;
+  color: #fff !important;
+}
+
+.plan-table tfoot .order-pill {
+  margin-right: 4rem  !important;
+}
+
+.plan-table tfoot .footer-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4rem auto;
+}
+
+.plan-table tfoot .footer-pills .order-pill {
+  display: inline-flex;
+  align-items: center;
 }
