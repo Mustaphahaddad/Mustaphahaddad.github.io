@@ -2927,3 +2927,34 @@ tr.maint-row-open>.employee-cell {
   display: inline-flex;
   align-items: center;
 }
+
+tbody tr.reklamasjon-row > * {
+  background-color: #fbd5d5 !important;
+}
+
+tbody tr.reklamasjon-row:hover > * {
+  background-color: #ffd1d1 !important;
+}
+
+tbody tr.reklamasjon-row > td:first-child {
+  box-shadow: inset 4px 0 0 #ff5a5a; 
+}
+
+.footer-row--reklamasjon td.sticky-col {
+  font-weight: 400;
+}
+
+/* Pill styling for Reklamasjon (pick your color) */
+.order-pill--reklamasjon {
+  background: #ffe6e6 !important;
+  color: #7a0b0b !important;
+  border: 1px solid #ffb3b3 !important;
+}
+
+/* Optional hover */
+.order-pill--reklamasjon:hover {
+  filter: brightness(0.97);
+}
+.plan-block--reklamasjon {
+  border-left: 4px solid #f97316; /* مثال */
+}
