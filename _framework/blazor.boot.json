@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "OrderScheduler",
   "resources": {
-    "hash": "sha256-CwoIcA9ceYL9m/3rblyALHSntUCHj/HRIBzsTexPylo=",
+    "hash": "sha256-ljfm1EVr4HfTK4noMUQmvH7sY5IlZsTrJ53IDvk8uic=",
     "fingerprinting": {
       "Azure.Core.ltf0pljmuu.wasm": "Azure.Core.wasm",
       "Microsoft.AspNetCore.Authorization.y09gq0l71e.wasm": "Microsoft.AspNetCore.Authorization.wasm",
@@ -78,7 +78,7 @@
       "System.Threading.49f94ze17y.wasm": "System.Threading.wasm",
       "System.cunp5qiwjj.wasm": "System.wasm",
       "System.Private.CoreLib.qe0t6kerm6.wasm": "System.Private.CoreLib.wasm",
-      "OrderScheduler.c4oa5mn008.wasm": "OrderScheduler.wasm",
+      "OrderScheduler.abbc8dw3n9.wasm": "OrderScheduler.wasm",
       "dotnet.js": "dotnet.js",
       "dotnet.native.rtblh4npr3.js": "dotnet.native.js",
       "dotnet.native.aqhezbunpl.wasm": "dotnet.native.wasm",
@@ -179,7 +179,7 @@
       "System.Threading.Thread.kikdu83mrh.wasm": "sha256-HFeFKONCCyItD2mVCPcxvfm6YwNN1XQ0eweW6uTLwCw=",
       "System.Threading.49f94ze17y.wasm": "sha256-eMVxRGg7oZUX5lIdChi0hccItDLRWV40/GUaSBTvGqQ=",
       "System.cunp5qiwjj.wasm": "sha256-DM5iEENhrifGKn33Y7cqRzxC0OtHXYOKO13icwIazj8=",
-      "OrderScheduler.c4oa5mn008.wasm": "sha256-nEXsd0irnd5PfPYRk/VlGE1A4VOsz/QtnG8jnMnUZ5A="
+      "OrderScheduler.abbc8dw3n9.wasm": "sha256-uh/oXjiipp/V0oOakWkc2SRd6Iu3rM+spedYru6ArvQ="
     }
   },
   "cacheBootResources": true,
